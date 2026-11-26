@@ -7,6 +7,7 @@ import 'package:studio_core/app/arcade_stage.dart';
 import 'package:studio_core/app/game_api.dart';
 import 'package:studio_core/app/play_kit.dart';
 import 'package:studio_core/app/services/audio.dart';
+import 'package:studio_core/app/studio_ui.dart';
 import 'package:studio_core/core/arcade.dart';
 import 'package:studio_core/core/game_rules.dart';
 import 'package:studio_core/core/rng.dart';
@@ -424,8 +425,8 @@ class _CarromDuelViewState extends State<CarromDuelView> with SingleTickerProvid
             child: _chip('${link != null ? widget.ctx.seatName(opp) : Strings.pick(_tRival, lang)} ${9 - match.onBoard(men, opp)}/9', !myTurn, opp)),
       ]),
     );
-    return ColoredBox(
-      color: const Color(0xFF1A1B2E),
+    // Onaylı tasarımın degrade zemini; tahta çizimi kendi sanatını korur.
+    return StudioBackdrop(
       child: Column(children: [
         head,
         Expanded(
@@ -457,8 +458,9 @@ class _CarromDuelViewState extends State<CarromDuelView> with SingleTickerProvid
   Widget _chip(String text, bool active, int seat) => Container(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
         decoration: BoxDecoration(
-          color: active ? const Color(0xFF52B788) : Colors.white.withValues(alpha: 0.12),
-          borderRadius: BorderRadius.circular(16),
+          color: active ? const Color(0xFF2E9E62) : Colors.black.withValues(alpha: 0.30),
+          borderRadius: BorderRadius.circular(18),
+          border: Border.all(color: active ? Colors.white.withValues(alpha: 0.6) : Colors.white.withValues(alpha: 0.25)),
         ),
         child: Row(mainAxisSize: MainAxisSize.min, children: [
           Container(

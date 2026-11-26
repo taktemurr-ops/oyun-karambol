@@ -7,6 +7,7 @@ import 'package:studio_core/app/game_api.dart';
 import 'package:studio_core/core/game_rules.dart';
 import 'package:studio_core/core/level_plan.dart';
 import 'package:studio_core/core/rng.dart';
+import 'package:studio_core/app/studio_ui.dart';
 
 class FakeLink implements MatchLink {
   @override
@@ -176,6 +177,12 @@ void main() {
     final out = <RoundResult>[];
     await tester.pumpWidget(MaterialApp(home: Scaffold(body: karambolConfig.buildPlay(ctxFor(gl, out)))));
     expect(find.byType(CarromDuelView), findsOneWidget);
+    // Onaylı tasarım: degrade zemin ve koyu yarı saydam oyuncu hapları.
+    expect(find.descendant(of: find.byType(CarromDuelView), matching: find.byType(StudioBackdrop)), findsOneWidget);
+    for (final e in find.descendant(of: find.byType(CarromDuelView), matching: find.byType(RichText)).evaluate()) {
+      final c = (e.widget as RichText).text.style?.color;
+      if (c != null) expect(c.computeLuminance(), greaterThan(0.5));
+    }
     // Nişan al ve vur.
     final c = tester.getCenter(find.byType(CustomPaint).last);
     final g = await tester.startGesture(c);
